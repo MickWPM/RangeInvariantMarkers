@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MM.RangeInvariantMarkers
 {
@@ -32,60 +33,50 @@ namespace MM.RangeInvariantMarkers
 
         #region GazeManagement
         [SerializeField]
-        private VisualStatus currentVisualStatus = VisualStatus.VISIBLE;
-        //public AnimationCurve fadeCurve;
 
+        //public AnimationCurve fadeCurve;
         public float fadeOutTimeThreshold = 0.2f;
         public float fadeInTimeThreshold = 1.0f;
 
-        public float fadeOutTime = 1.0f;
-        public float fadeInTime = 1.0f;
+        public float fadeOutDuration = 0.5f;
+        public float fadeInDuration = 1.0f;
 
-        [SerializeField]
-        float timeOfLastGaze = float.MinValue;
-        [SerializeField]
-        float runningGazeTime = 0.0f;
-        float gazeLossTimeout = 0f;
-
+        private float lastGazeTimestamp = 0f;
+        private float gazeLossTimeout = 0.2f;
+        private bool currentlyLookedAt = false;
+        private float lookedAtTimer = 0f, lookAwayTimer = 0f;
         void IMarkerVisuals.ProcessGaze()
         {
-            timeOfLastGaze = Time.time;
-            runningGazeTime += Time.deltaTime;
+            lastGazeTimestamp = Time.time;
+            currentlyLookedAt = true;
         }
 
         private void UpdateGazeFade()
         {
-            float timeSinceLastGaze = Time.time - timeOfLastGaze;
-            if (timeSinceLastGaze > gazeLossTimeout) runningGazeTime = 0;
-
-            switch (currentVisualStatus)
+            if (Time.time - lastGazeTimestamp > gazeLossTimeout)
             {
-                case VisualStatus.VISIBLE:
-                    if (runningGazeTime > fadeOutTimeThreshold)
-                        StartFadeOut();
-                    break;
-                case VisualStatus.FADING_OUT:
-                    if (runningGazeTime > 0)
-                        FadeOut();
-                    else
-                        currentVisualStatus = VisualStatus.HIDDEN;
-                    break;
-                case VisualStatus.HIDDEN:
-                    if (runningGazeTime <= float.Epsilon && Time.time - timeOfLastGaze > fadeInTimeThreshold)
-                        StartFadeIn();
-                    break;
-                case VisualStatus.FADING_IN:
-                    if (runningGazeTime > 0)
-                    {
-                        currentVisualStatus = VisualStatus.HIDDEN;
-                    }
-                    else
-                        FadeIn();
-
-                   break;
-                default:
-                    break;
+                currentlyLookedAt = false;
             }
+
+            if (currentlyLookedAt)
+            {
+                lookAwayTimer = 0;
+                lookedAtTimer += Time.deltaTime;
+            } else
+            {
+                lookedAtTimer = 0;
+                lookAwayTimer += Time.deltaTime;
+            }
+
+            if (lookedAtTimer > fadeOutTimeThreshold)
+            {
+                UpdateVisualsAlpha(0, fadeOutDuration);
+            }
+            else if (lookAwayTimer > fadeInTimeThreshold)
+            {
+                UpdateVisualsAlpha(1, fadeInDuration);
+            }
+
 
             var _instancedMaterial = gameObject.GetComponentInChildren<Renderer>().material;
             Color color = _instancedMaterial.GetColor(BaseColorId);
@@ -97,48 +88,20 @@ namespace MM.RangeInvariantMarkers
             _instancedMaterial.SetColor(BaseColorId, color);
         }
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
-        public Material mat;
         public float visualsAlpha = 1.0f;
-        private void StartFadeOut()
+
+        private void UpdateVisualsAlpha(float targetValue, float duration)
         {
-            currentVisualStatus = VisualStatus.FADING_OUT;
+            if (duration < 0)
+            {
+                visualsAlpha = targetValue;
+                return;
+            }
+
+            float step = Time.deltaTime / duration;
+            visualsAlpha = Mathf.MoveTowards(visualsAlpha, targetValue, step);
         }
 
-        private void FadeOut()
-        {
-            var fadeDuration = (runningGazeTime - fadeOutTimeThreshold);
-            var fadePercent = 1 - fadeDuration / fadeOutTime;
-
-            //TODO - ANIMATION CURVE
-            visualsAlpha = Mathf.Clamp01(fadePercent);
-            if (visualsAlpha < Mathf.Epsilon)
-                currentVisualStatus = VisualStatus.HIDDEN;
-        }
-
-        private void StartFadeIn()
-        {
-            currentVisualStatus = VisualStatus.FADING_IN;
-        }
-
-        private void FadeIn()
-        {
-            var lookAwayTime = Time.time - timeOfLastGaze;
-            var fadeInTimeSoFar = lookAwayTime - fadeInTimeThreshold;
-
-            var fadePercent = fadeInTimeSoFar / fadeInTime;
-            Debug.Log($"Fade in: fadeInTimeSoFar={lookAwayTime} - {fadeInTimeThreshold} = {fadeInTimeSoFar} (fadePercent = {fadePercent})");
-            visualsAlpha = Mathf.Clamp01(fadePercent);
-            if (1 - visualsAlpha  < Mathf.Epsilon)
-                currentVisualStatus = VisualStatus.VISIBLE;
-        }
-
-        private enum VisualStatus
-        {
-            VISIBLE,
-            FADING_OUT,
-            HIDDEN,
-            FADING_IN
-        }
         #endregion
     }
 }
