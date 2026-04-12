@@ -54,6 +54,7 @@ namespace MM.RangeInvariantMarkers
         private System.Collections.Generic.Dictionary<MarkerData, IMarkerVisuals> markers = new System.Collections.Generic.Dictionary<MarkerData, IMarkerVisuals>();
         private System.Collections.Generic.Dictionary<MarkerData, GameObject> markerGOs = new System.Collections.Generic.Dictionary<MarkerData, GameObject>();
         [SerializeField] private GameObject markerPrefab;
+        [SerializeField] private IMarkerVisuals.VisualTimers visualEffectTimers;
 
         private void Start()
         {

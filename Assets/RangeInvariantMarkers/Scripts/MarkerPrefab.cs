@@ -32,22 +32,29 @@ namespace MM.RangeInvariantMarkers
 
 
         #region GazeManagement
-        [SerializeField]
+        public event System.Action GazeStartEvent;
+        public event System.Action<float> GazeLingerTimeEvent;
+        public event System.Action GazeEndEvent;
 
-        //public AnimationCurve fadeCurve;
-        public float fadeOutTimeThreshold = 0.2f;
-        public float fadeInTimeThreshold = 1.0f;
+        private float fadeOutTimeThreshold = 0.2f;
+        private float fadeInTimeThreshold = 1.0f;
+        
+        private float fadeOutDuration = 0.5f;
+        private float fadeInDuration = 1.0f;
 
-        public float fadeOutDuration = 0.5f;
-        public float fadeInDuration = 1.0f;
-
-        private float lastGazeTimestamp = 0f;
         private float gazeLossTimeout = 0.2f;
+
+        //Gaze detection tracking
+        private float lastGazeTimestamp = 0f;
         private bool currentlyLookedAt = false;
         private float lookedAtTimer = 0f, lookAwayTimer = 0f;
         void IMarkerVisuals.ProcessGaze()
         {
             lastGazeTimestamp = Time.time;
+            if (currentlyLookedAt == false)
+            {
+                GazeStartEvent?.Invoke();
+            }
             currentlyLookedAt = true;
         }
 
@@ -55,6 +62,7 @@ namespace MM.RangeInvariantMarkers
         {
             if (Time.time - lastGazeTimestamp > gazeLossTimeout)
             {
+                GazeEndEvent?.Invoke();
                 currentlyLookedAt = false;
             }
 
@@ -62,6 +70,7 @@ namespace MM.RangeInvariantMarkers
             {
                 lookAwayTimer = 0;
                 lookedAtTimer += Time.deltaTime;
+                GazeLingerTimeEvent?.Invoke(lookedAtTimer);
             } else
             {
                 lookedAtTimer = 0;
@@ -77,18 +86,11 @@ namespace MM.RangeInvariantMarkers
                 UpdateVisualsAlpha(1, fadeInDuration);
             }
 
-
-            var _instancedMaterial = gameObject.GetComponentInChildren<Renderer>().material;
-            Color color = _instancedMaterial.GetColor(BaseColorId);
-
-            // 2. Modify the alpha
-            color.a = visualsAlpha;
-
-            // 3. Set it back
-            _instancedMaterial.SetColor(BaseColorId, color);
+            UpdateVisuals();
         }
-        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
-        public float visualsAlpha = 1.0f;
+
+
+        private float visualsAlpha = 1.0f;
 
         private void UpdateVisualsAlpha(float targetValue, float duration)
         {
@@ -102,6 +104,23 @@ namespace MM.RangeInvariantMarkers
             visualsAlpha = Mathf.MoveTowards(visualsAlpha, targetValue, step);
         }
 
+        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+        private void UpdateVisuals()
+        {
+            var _instancedMaterial = gameObject.GetComponentInChildren<Renderer>().material;
+            Color color = _instancedMaterial.GetColor(BaseColorId);
+            color.a = visualsAlpha;
+            _instancedMaterial.SetColor(BaseColorId, color);
+        }
+
+        void IMarkerVisuals.SetTimers(IMarkerVisuals.VisualTimers timer)
+        {
+            this.fadeOutTimeThreshold = timer.fadeOutTimeThreshold;
+            this.fadeOutDuration = timer.fadeOutDuration;
+            this.fadeInTimeThreshold = timer.fadeInTimeThreshold;
+            this.fadeInDuration = timer.fadeInDuration;
+            this.gazeLossTimeout = timer.gazeLossTimeout;
+        }
         #endregion
     }
 }
