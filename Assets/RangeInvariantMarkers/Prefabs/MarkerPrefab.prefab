@@ -48,6 +48,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MarkerPrefab
   markerInfoText: {fileID: 1249833772738626387}
   rootUI: {fileID: 8167680931414240983}
+  currentVisualStatus: 0
+  fadeOutTimeThreshold: 0.2
+  fadeInTimeThreshold: 1
+  fadeOutTime: 1
+  fadeInTime: 1
+  timeOfLastGaze: -3.4028235e+38
+  runningGazeTime: 0
+  visualsAlpha: 1
 --- !u!1 &4082772175305581746
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +198,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: c4825aa8c55968d4fb5716a81cc37d26, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

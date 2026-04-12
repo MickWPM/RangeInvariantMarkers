@@ -539,14 +539,6 @@ MonoBehaviour:
     y: 10
     alt: 2
     info: Northern Marker
-  - x: 5
-    y: 0
-    alt: 2
-    info: Eastern Marker
-  - x: 30
-    y: 30
-    alt: 2
-    info: North Eastern marker
   markerPrefab: {fileID: 149354008974615910, guid: f48afb0b9e80a624596dc83bc3c03e86, type: 3}
 --- !u!4 &1737038115
 Transform:

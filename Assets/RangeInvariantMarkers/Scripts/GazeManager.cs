@@ -11,6 +11,8 @@ namespace MM.RangeInvariantMarkers
         private bool rayHit;
         private GameObject hitGO;
         private Vector3 hitPoint;
+
+
         private void Update()
         {
             gazeRay = new Ray(cam.transform.position, cam.transform.forward);
@@ -22,7 +24,24 @@ namespace MM.RangeInvariantMarkers
                 hitGO = hitInfo.collider.gameObject;
                 hitPoint = hitInfo.point;
                 Debug.Log("Hit: " + hitInfo.collider.name);
+                ProcessGaze(hitGO);
             }
+        }
+
+        public void ProcessGaze(GameObject hitObject)
+        {
+            IMarkerVisuals markerVisuals = hitObject.GetComponent<IMarkerVisuals>();
+            if (markerVisuals == null)
+            {
+                markerVisuals = hitObject.GetComponentInParent<IMarkerVisuals>();
+            }
+            if (markerVisuals == null)
+            {
+                rayHit = false;
+                return;
+            }
+
+            markerVisuals.ProcessGaze();
         }
 
         public Vector3 rayOrigin, rayDirection;

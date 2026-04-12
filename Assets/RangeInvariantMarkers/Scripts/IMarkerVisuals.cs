@@ -9,6 +9,7 @@ namespace MM.RangeInvariantMarkers
         public void SetMessage(string message);
         public GameObject GetPrefabGO();
         public void UpdateVisuals(Vector3 observerPosition);
+        public void ProcessGaze();
 
     }
 }
