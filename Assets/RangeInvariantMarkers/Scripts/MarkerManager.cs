@@ -88,6 +88,8 @@ namespace MM.RangeInvariantMarkers
             markerGOs.Add(markerData, markerObject);
 
         }
+
+
         private void LateUpdate()
         {
             foreach (var markerData in allMarkerData)

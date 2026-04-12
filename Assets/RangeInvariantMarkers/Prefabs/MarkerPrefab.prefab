@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5230714569997588944}
   - component: {fileID: 3484852910154127206}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MarkerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 3440916416220207664}
   - component: {fileID: 979482796612694749}
   - component: {fileID: 5829553457856837581}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 9033973912464390718}
   - component: {fileID: 8675557526643069079}
   - component: {fileID: 8766032514369611040}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +231,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 3199892004192284463}
   - component: {fileID: 8087590928791039588}
   - component: {fileID: 7035235606013882766}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: MarkerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 1780922203343578775}
   - component: {fileID: 1591050986151300406}
   - component: {fileID: 1249833772738626387}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4044550408622270164}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: rootUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
