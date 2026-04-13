@@ -539,6 +539,14 @@ MonoBehaviour:
     y: 10
     alt: 2
     info: Northern Marker
+  - x: 5
+    y: 5
+    alt: 2
+    info: NE Marker
+  - x: 5
+    y: 0
+    alt: 1
+    info: Eastern marker information...
   markerPrefab: {fileID: 149354008974615910, guid: f48afb0b9e80a624596dc83bc3c03e86, type: 3}
   visualEffectTimers:
     fadeOutTimeThreshold: 0.2

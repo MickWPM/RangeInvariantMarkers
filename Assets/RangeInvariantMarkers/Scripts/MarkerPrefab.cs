@@ -9,6 +9,29 @@ namespace MM.RangeInvariantMarkers
         public TMPro.TextMeshProUGUI markerInfoText;
         public GameObject rootUI;
 
+        public void OnEnable()
+        {
+            this.GazeLingerTimeEvent += MarkerPrefab_GazeLingerTimeEvent;
+            this.GazeEndEvent += MarkerPrefab_GazeEndEvent;
+            rootUI.SetActive(false);
+        }
+
+        private void MarkerPrefab_GazeEndEvent()
+        {
+            rootUI.SetActive(false);
+        }
+
+        private void MarkerPrefab_GazeLingerTimeEvent(float gazetime)
+        {
+            rootUI.SetActive(gazetime > this.fadeOutDuration);
+        }
+
+        public void OnDisable()
+        {
+            this.GazeLingerTimeEvent -= MarkerPrefab_GazeLingerTimeEvent;
+            this.GazeEndEvent -= MarkerPrefab_GazeEndEvent;
+        }
+
         GameObject IMarkerVisuals.GetPrefabGO()
         {
             return this.gameObject;
