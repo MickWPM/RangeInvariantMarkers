@@ -85,6 +85,7 @@ namespace MM.RangeInvariantMarkers
             }
 
             markerVisualsInterface.SetMessage(markerData.MarkerInfo);
+            markerVisualsInterface.SetTimers(visualEffectTimers);
             markers.Add(markerData, markerVisualsInterface);
             markerGOs.Add(markerData, markerObject);
 
