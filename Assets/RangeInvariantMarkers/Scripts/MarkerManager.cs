@@ -4,9 +4,18 @@ namespace MM.RangeInvariantMarkers
 {
     public static class UnityMarkerConversion
     {
-        public static Vector3 UnityWorldPosition(MarkerData markerData)
+        public static Vector3 UnityWorldPosition(MarkerData markerData, Vector3 playerPos, float renderDistance = float.PositiveInfinity)
         {
-            return new Vector3((float)markerData.X, (float)markerData.Alt, (float)markerData.Y);
+            Vector3 unityPos = new Vector3((float)markerData.X, (float)markerData.Alt, (float)markerData.Y);
+            Vector3 markerDirVec = unityPos - playerPos;
+            float dist = markerDirVec.magnitude;
+            if (dist < renderDistance) 
+                return unityPos;
+
+            //Without the delta everything is rendered at the same distance so we can have some z fighting
+            float delta = dist * 0.00001f;
+            Vector3 renderPos = playerPos + markerDirVec.normalized * renderDistance * (1+ delta);
+            return renderPos;
         }
     }
 
@@ -56,6 +65,8 @@ namespace MM.RangeInvariantMarkers
         [SerializeField] private GameObject markerPrefab;
         [SerializeField] private IMarkerVisuals.VisualTimers visualEffectTimers;
 
+        public float renderDistance = 15f;
+
         private void Start()
         {
             if (markerPrefab == null)
@@ -97,7 +108,7 @@ namespace MM.RangeInvariantMarkers
             foreach (var markerData in allMarkerData)
             {
                 var markerObject = markerGOs[markerData];
-                markerObject.transform.position = UnityMarkerConversion.UnityWorldPosition(markerData);
+                markerObject.transform.position = UnityMarkerConversion.UnityWorldPosition(markerData, playerObject.transform.position, renderDistance);
                 markers[markerData].UpdateVisuals(playerObject.transform.position);
             }
         }
