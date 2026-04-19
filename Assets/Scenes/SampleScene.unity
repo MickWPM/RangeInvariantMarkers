@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &265401146 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4135013735270702863, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 899104842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,11 +503,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4135013735270702856, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
   m_PrefabInstance: {fileID: 899104842}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1427069658 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
-  m_PrefabInstance: {fileID: 899104842}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1737038113
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,20 +533,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb8c8223eab5dd41be71a58bb505a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MM.RangeInvariantMarkers.MarkerManager
-  playerObject: {fileID: 1427069658}
+  playerObject: {fileID: 265401146}
   allMarkerData:
   - x: 0
-    y: 10
-    alt: 2
+    y: 12
+    alt: 1
     info: Northern Marker
-  - x: 5
-    y: 5
-    alt: 2
-    info: NE Marker
-  - x: 5
+  - x: -100000
     y: 0
     alt: 1
-    info: Eastern marker information...
+    info: Western Not Displayed Marker
+  - x: 1500
+    y: 0
+    alt: 20
+    info: Eastern Marker
+  - x: 2500
+    y: 2500
+    alt: 150
+    info: NE Marker
   markerPrefab: {fileID: 149354008974615910, guid: f48afb0b9e80a624596dc83bc3c03e86, type: 3}
   visualEffectTimers:
     fadeOutTimeThreshold: 0.2
@@ -554,6 +558,8 @@ MonoBehaviour:
     fadeOutDuration: 1
     fadeInDuration: 2
     gazeLossTimeout: 0.2
+  renderDistance: 15
+  minMaxDisplayDistance: {x: 10, y: 7500}
 --- !u!4 &1737038115
 Transform:
   m_ObjectHideFlags: 0
