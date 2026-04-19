@@ -32,6 +32,7 @@ Transform:
   m_Children:
   - {fileID: 2405612773306010988}
   - {fileID: 4044550408622270164}
+  - {fileID: 503000475358133858}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3484852910154127206
@@ -48,14 +49,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MarkerPrefab
   markerInfoText: {fileID: 1249833772738626387}
   rootUI: {fileID: 8167680931414240983}
-  currentVisualStatus: 0
-  fadeOutTimeThreshold: 0.2
-  fadeInTimeThreshold: 1
-  fadeOutTime: 1
-  fadeInTime: 1
-  timeOfLastGaze: -3.4028235e+38
-  runningGazeTime: 0
-  visualsAlpha: 1
 --- !u!1 &4082772175305581746
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,6 +124,59 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5720516436492314475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 503000475358133858}
+  - component: {fileID: 4251126125429781435}
+  m_Layer: 11
+  m_Name: ColliderMarker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &503000475358133858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720516436492314475}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5230714569997588944}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &4251126125429781435
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720516436492314475}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6568601560040003578
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +188,6 @@ GameObject:
   - component: {fileID: 2405612773306010988}
   - component: {fileID: 9033973912464390718}
   - component: {fileID: 8675557526643069079}
-  - component: {fileID: 8766032514369611040}
   m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
@@ -222,13 +267,45 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8766032514369611040
+--- !u!1 &7852776329603379823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3062125026310838892}
+  - component: {fileID: 8952517419920971690}
+  m_Layer: 11
+  m_Name: ColliderText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3062125026310838892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7852776329603379823}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.22, y: 1.81, z: 0}
+  m_LocalScale: {x: 4.76062, y: 2.6823244, z: 2.8384385}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4044550408622270164}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8952517419920971690
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6568601560040003578}
+  m_GameObject: {fileID: 7852776329603379823}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -513,5 +590,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7592368902481536110}
+  - {fileID: 3062125026310838892}
   m_Father: {fileID: 5230714569997588944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
