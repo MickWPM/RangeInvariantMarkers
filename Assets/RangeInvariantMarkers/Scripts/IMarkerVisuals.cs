@@ -10,6 +10,7 @@ namespace MM.RangeInvariantMarkers
         public void SetMessage(string message);
         public GameObject GetPrefabGO();
         public void UpdateVisuals(Vector3 observerPosition);
+        public void SetVisualsEnabled(bool enabled);
         public void ProcessGaze();
 
         [System.Serializable]

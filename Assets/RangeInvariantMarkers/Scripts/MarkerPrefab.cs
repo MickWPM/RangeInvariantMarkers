@@ -8,7 +8,7 @@ namespace MM.RangeInvariantMarkers
     {
         public TMPro.TextMeshProUGUI markerInfoText;
         public GameObject rootUI;
-
+        private bool enableMarkerVisuals = true;
         public void OnEnable()
         {
             this.GazeLingerTimeEvent += MarkerPrefab_GazeLingerTimeEvent;
@@ -48,6 +48,16 @@ namespace MM.RangeInvariantMarkers
             UpdateGazeFade();
         }
 
+        void IMarkerVisuals.SetVisualsEnabled(bool enabled)
+        {
+            if (enableMarkerVisuals == enabled) return;
+            enableMarkerVisuals = enabled;
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(enabled);
+            }
+        }
+
         public void LateUpdate()
         {
             UpdateGazeFade();
@@ -83,6 +93,8 @@ namespace MM.RangeInvariantMarkers
 
         private void UpdateGazeFade()
         {
+            if (enableMarkerVisuals == false) return;
+
             if (Time.time - lastGazeTimestamp > gazeLossTimeout)
             {
                 GazeEndEvent?.Invoke();
@@ -144,6 +156,7 @@ namespace MM.RangeInvariantMarkers
             this.fadeInDuration = timer.fadeInDuration;
             this.gazeLossTimeout = timer.gazeLossTimeout;
         }
+
         #endregion
     }
 }

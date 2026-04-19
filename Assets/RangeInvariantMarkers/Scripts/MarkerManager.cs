@@ -4,18 +4,35 @@ namespace MM.RangeInvariantMarkers
 {
     public static class UnityMarkerConversion
     {
-        public static Vector3 UnityWorldPosition(MarkerData markerData, Vector3 playerPos, float renderDistance = float.PositiveInfinity)
+
+        public static bool RenderAtUnityWorldPosition(MarkerData markerData, Vector3 playerPos, out Vector3 renderPos, 
+            float renderDistance = Mathf.Infinity)
         {
+            return RenderAtUnityWorldPosition(markerData, playerPos, out renderPos, renderDistance, new Vector2(0, float.MaxValue));
+        }
+        public static bool RenderAtUnityWorldPosition(MarkerData markerData, Vector3 playerPos, out Vector3 renderPos, 
+            float renderDistance, Vector2 minMaxDisplayDistance)
+        {
+            renderPos = Vector3.zero;
+
             Vector3 unityPos = new Vector3((float)markerData.X, (float)markerData.Alt, (float)markerData.Y);
             Vector3 markerDirVec = unityPos - playerPos;
             float dist = markerDirVec.magnitude;
+
+            if (dist < minMaxDisplayDistance.x || dist > minMaxDisplayDistance.y)
+            {
+                
+                return false;
+            }
+
+            renderPos = unityPos;
             if (dist < renderDistance) 
-                return unityPos;
+                return true;
 
             //Without the delta everything is rendered at the same distance so we can have some z fighting
             float delta = dist * 0.00001f;
-            Vector3 renderPos = playerPos + markerDirVec.normalized * renderDistance * (1+ delta);
-            return renderPos;
+            renderPos = playerPos + markerDirVec.normalized * renderDistance * (1+ delta);
+            return true;
         }
     }
 
@@ -66,6 +83,7 @@ namespace MM.RangeInvariantMarkers
         [SerializeField] private IMarkerVisuals.VisualTimers visualEffectTimers;
 
         public float renderDistance = 15f;
+        public Vector2 minMaxDisplayDistance = new Vector2 (10, 10000);
 
         private void Start()
         {
@@ -108,14 +126,24 @@ namespace MM.RangeInvariantMarkers
             foreach (var markerData in allMarkerData)
             {
                 var markerObject = markerGOs[markerData];
-                markerObject.transform.position = UnityMarkerConversion.UnityWorldPosition(markerData, playerObject.transform.position, renderDistance);
-                markers[markerData].UpdateVisuals(playerObject.transform.position);
+                Vector3 renderPos = Vector3.zero;
+                bool render = UnityMarkerConversion.RenderAtUnityWorldPosition(markerData, playerObject.transform.position, 
+                    out renderPos, renderDistance, minMaxDisplayDistance);
+                if (render)
+                {
+                    markers[markerData].SetVisualsEnabled(true);
+                    markerObject.transform.position = renderPos;
+                    markers[markerData].UpdateVisuals(playerObject.transform.position);
+                } else
+                {
+                    markers[markerData].SetVisualsEnabled(false);
+                }
             }
         }
 
         private void OnValidate()
         {
-            if (markerPrefab != null)// && !(markerPrefab is IMarkerVisuals))
+            if (markerPrefab != null)
             {
                 IMarkerVisuals markerVisualsInterface = markerPrefab.GetComponent<IMarkerVisuals>();
                 if (markerVisualsInterface != null) return;
